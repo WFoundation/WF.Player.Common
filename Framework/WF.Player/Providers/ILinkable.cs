@@ -27,11 +27,10 @@ namespace WF.Player.Providers
     public interface ILinkable
     {
         /// <summary>
-        /// Gets if this ILinkable is currently linked to its associated source.
+        /// Gets the link state of this ILinkable, indicating if it is linked to its
+        /// associated remote source or not.
         /// </summary>
-        /// <value>True if the ILinkable is linked, false otherwise. If this value
-        /// is false, the ILinkable may deny service.</value>
-        bool IsLinked { get; }
+        LinkState LinkState { get; }
 
         /// <summary>
         /// Attempts at asynchronously linking this ILinkable to its associated source.

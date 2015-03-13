@@ -41,6 +41,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\IQueryable.cs" />
     <Compile Include="Providers\ISyncable.cs" />
+    <Compile Include="Providers\LinkState.cs" />
+    <Compile Include="Providers\ProviderBase.cs" />
     <Compile Include="SimplePlayer.cs" />
   </ItemGroup>
   <ItemGroup>

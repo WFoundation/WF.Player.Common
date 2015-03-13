@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Phone
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WF.Player-wp7", "Framework\WF.Player\WF.Player-wp7.csproj", "{92BD90E8-6BC7-4986-9D20-6D74B53694B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCLStorage.WindowsPhone7", "..\..\Mangatome\PCLStorage\src\PCLStorage.WindowsPhone7\PCLStorage.WindowsPhone7.csproj", "{B6E280CD-267B-4B69-B484-38487F1FA23A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCLStorage.Abstractions.WindowsPhone7", "..\..\Mangatome\PCLStorage\src\PCLStorage.Abstractions.WindowsPhone7\PCLStorage.Abstractions.WindowsPhone7.csproj", "{39D2C537-7A16-497D-81A2-CDC8D6C1A57F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{92BD90E8-6BC7-4986-9D20-6D74B53694B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92BD90E8-6BC7-4986-9D20-6D74B53694B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92BD90E8-6BC7-4986-9D20-6D74B53694B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92BD90E8-6BC7-4986-9D20-6D74B53694B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6E280CD-267B-4B69-B484-38487F1FA23A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6E280CD-267B-4B69-B484-38487F1FA23A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6E280CD-267B-4B69-B484-38487F1FA23A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6E280CD-267B-4B69-B484-38487F1FA23A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39D2C537-7A16-497D-81A2-CDC8D6C1A57F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39D2C537-7A16-497D-81A2-CDC8D6C1A57F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39D2C537-7A16-497D-81A2-CDC8D6C1A57F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39D2C537-7A16-497D-81A2-CDC8D6C1A57F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,4 +1,4 @@
-﻿// <copyright file="IProvider.cs" company="Wherigo Foundation">
+﻿// <copyright file="LinkState.cs" company="Wherigo Foundation">
 //   WF.Player - A Wherigo Player which use the Wherigo Foundation Core.
 //   Copyright (C) 2012-2015  Brice Clocher (mangatome@gmail.com)
 //   Copyright (C) 2012-2015  Dirk Weltz (mail@wfplayer.com)
@@ -17,17 +17,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
       
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace WF.Player.Providers
 {
-    /// <summary>
-    /// A source of CartridgeTags.
-    /// </summary>
-    public interface IProvider : IEnumerable, IEnumerable<CartridgeTag>
+    public enum LinkState
     {
+        Offline,
         
+        Linking,
+        
+        Online
     }
 }
