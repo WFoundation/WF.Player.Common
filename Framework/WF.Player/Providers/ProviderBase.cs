@@ -16,8 +16,9 @@
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-      
 
+
+using System.Collections.Generic;
 namespace WF.Player.Providers
 {
     /// <summary>
@@ -30,5 +31,17 @@ namespace WF.Player.Providers
         /// stores cartridge tags.
         /// </summary>
         public string LocalPathToCache { get; protected set; }
+
+        #region IProvider
+        public System.Collections.IEnumerator GetEnumerator()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        IEnumerator<CartridgeTag> IEnumerable<CartridgeTag>.GetEnumerator()
+        {
+            throw new System.NotImplementedException();
+        } 
+        #endregion
     }
 }

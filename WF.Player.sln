@@ -5,6 +5,10 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WF.Player", "Framework\WF.Player\WF.Player.csproj", "{228339A0-33BC-4DC6-91FF-F9D55D2C160D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WF.Player.Providers.OneDrive", "Framework\WF.Player.Providers.OneDrive\WF.Player.Providers.OneDrive.csproj", "{762E74F1-D5F8-4294-8949-6CDED6B13778}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneDrive_DesktopTest", "OneDrive_DesktopTest\OneDrive_DesktopTest.csproj", "{B5F45A3C-2AA8-45D8-834F-47F412B6380C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{228339A0-33BC-4DC6-91FF-F9D55D2C160D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{228339A0-33BC-4DC6-91FF-F9D55D2C160D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{228339A0-33BC-4DC6-91FF-F9D55D2C160D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{762E74F1-D5F8-4294-8949-6CDED6B13778}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{762E74F1-D5F8-4294-8949-6CDED6B13778}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{762E74F1-D5F8-4294-8949-6CDED6B13778}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{762E74F1-D5F8-4294-8949-6CDED6B13778}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5F45A3C-2AA8-45D8-834F-47F412B6380C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5F45A3C-2AA8-45D8-834F-47F412B6380C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5F45A3C-2AA8-45D8-834F-47F412B6380C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5F45A3C-2AA8-45D8-834F-47F412B6380C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

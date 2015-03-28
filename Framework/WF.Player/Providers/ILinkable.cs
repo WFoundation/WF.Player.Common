@@ -37,7 +37,17 @@ namespace WF.Player.Providers
         /// </summary>
         /// <returns>An awaitable task.</returns>
         /// <remarks>If this ILinkable is already linked at the time the task is ran,
+        /// the task will succeed seamlessly.
+        /// This method is allowed to trigger UX events in the app (for instance, starting
+        /// a login UX for the user to give permissions.)</remarks>
+        Task<LinkResult> LinkAsync();
+
+        /// <summary>
+        /// Attempts at asynchronously unlinking this ILinkable from its associated source.
+        /// </summary>
+        /// <returns>An awaitable task.</returns>
+        /// <remarks>If this ILinkable is already unlinked at the time the task is ran,
         /// the task will succeed seamlessly.</remarks>
-        Task LinkAsync();
+        Task<LinkResult> UnlinkAsync();
     }
 }
