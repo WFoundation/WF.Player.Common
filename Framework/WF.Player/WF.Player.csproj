@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CartridgeTag.cs" />
+    <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="IPlayer.cs" />
     <Compile Include="Providers\ILinkable.cs" />
     <Compile Include="Providers\IProvider.cs" />

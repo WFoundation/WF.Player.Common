@@ -1,12 +1,15 @@
 ﻿using Microsoft.Live;
 using System;
 using System.Threading.Tasks;
+using WF.Player.Extensions;
 
 namespace WF.Player.Providers
 {
     public class OneDriveProvider : ProviderBase, ILinkable
     {
         #region Constants
+
+        private static readonly int _LinkTimeout = 10000; // in ms
 
         private static readonly string[] _Scopes = new string[] { "wl.skydrive_update", "wl.offline_access", "wl.signin" };
 
@@ -103,24 +106,13 @@ namespace WF.Player.Providers
             }
         }
 
-        private bool CheckStateForLinking()
-        {
-            LinkState ls = this.LinkState;
-            if (ls == Providers.LinkState.Online)
-            {
-                return false;
-            }
-
-            // Fails if the ILinkable is linking.
-            else if (ls == Providers.LinkState.Linking)
-            {
-                throw new InvalidOperationException("Another linking task is running.");
-            }
-
-            // We can link.
-            return true;
-        }
-
+        /// <summary>
+        /// Attempts at asynchronously linking this OneDriveProvider using an authentication code.
+        /// </summary>
+        /// <returns>An awaitable task.</returns>
+        /// <remarks>If this ILinkable is already linked at the time the task is ran,
+        /// the task will succeed seamlessly.
+        /// This method never triggers UX events in the app.</remarks>
         public async Task<LinkResult> LinkAsync(string authCode)
         {
 #if WINDOWS_PHONE || WINDOWS_STORE
@@ -139,18 +131,55 @@ namespace WF.Player.Providers
             LiveAuthClient authClient = new LiveAuthClient(ClientId);
 
             // Exchanges auth codes.
-            LiveConnectSession session = await authClient.ExchangeAuthCodeAsync(authCode);
+            return await authClient
+                .ExchangeAuthCodeAsync(authCode)
+                .TimeoutAfter(_LinkTimeout)
+                .ContinueWith<LinkResult>(t =>
+            {
+                if (t.IsFaulted)
+                {
+                    // We're offline because of a timeout.
+                    LinkState = Providers.LinkState.Offline;
 
-            // The session is ready. Make a client out of it.
-            MakeClientFromSession(session);
+                    return new LinkResult(Providers.LinkState.Offline, false, true);
+                }
+                else
+                {
+                    // The session is ready. Make a client out of it.
+                    MakeClientFromSession(t.Result);
 
-            // We're online.
-            LinkState = Providers.LinkState.Online;
+                    // We're online.
+                    LinkState = Providers.LinkState.Online;
 
-            // Returns.
-            return new LinkResult(Providers.LinkState.Online);
+                    // Returns.
+                    return new LinkResult(Providers.LinkState.Online);
+                }
+            });
 #endif
-        } 
+        }
+
+        private bool CheckStateForLinking()
+        {
+            LinkState ls = this.LinkState;
+            if (ls == Providers.LinkState.Online)
+            {
+                return false;
+            }
+
+            // Fails if the ILinkable is linking.
+            else if (ls == Providers.LinkState.Linking)
+            {
+                throw new InvalidOperationException("Another linking task is running.");
+            }
+
+            // We can link.
+            return true;
+        }
+
+        private void MakeClientFromSession(LiveConnectSession session)
+        {
+            _client = new LiveConnectClient(session);
+        }
 
         #endregion
 
@@ -158,11 +187,9 @@ namespace WF.Player.Providers
         {
             throw new System.NotImplementedException();
         } 
+
         #endregion
 
-        private void MakeClientFromSession(LiveConnectSession session)
-        {
-            _client = new LiveConnectClient(session);
-        }
+
     }
 }

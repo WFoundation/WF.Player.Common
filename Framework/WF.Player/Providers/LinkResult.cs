@@ -29,6 +29,11 @@ namespace WF.Player.Providers
         public bool RequiresUserInput { get; private set; }
 
         /// <summary>
+        /// Gets if the link process timed out.
+        /// </summary>
+        public bool TimedOut { get; private set; }
+
+        /// <summary>
         /// Gets an Uri that can be used to get user consent from the user in order to complete
         /// the link operation.
         /// </summary>
@@ -45,10 +50,11 @@ namespace WF.Player.Providers
             State = finalState;
         }
 
-        public LinkResult(LinkState finalState, bool requiresUserInput)
+        public LinkResult(LinkState finalState, bool requiresUserInput, bool timedOut)
         {
             State = finalState;
             RequiresUserInput = requiresUserInput;
+            TimedOut = timedOut;
         }
 
         public LinkResult(LinkState finalState, string userConsentUrl)
