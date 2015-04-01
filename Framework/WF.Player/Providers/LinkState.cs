@@ -23,6 +23,8 @@ namespace WF.Player.Providers
     public enum LinkState
     {
         Offline,
+
+        Unlinking,
         
         Linking,
         

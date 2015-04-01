@@ -5,7 +5,7 @@ using WF.Player.Extensions;
 
 namespace WF.Player.Providers
 {
-    public class OneDriveProvider : ProviderBase, ILinkable
+    public class OneDriveProvider : ProviderBase, ILinkable, ISyncable
     {
         #region Constants
 
@@ -60,9 +60,9 @@ namespace WF.Player.Providers
         public async Task<LinkResult> LinkAsync()
         {
             // Succeeds if the ILinkable is already linked.
-            if (!CheckStateForLinking())
+            if (!CheckLinkState(Providers.LinkState.Online))
             {
-                return new LinkResult(Providers.LinkState.Online);
+                return LinkResult.Online();
             }
 
             // We're now linking.
@@ -84,7 +84,7 @@ namespace WF.Player.Providers
                 LinkState = Providers.LinkState.Online;
 
                 // Returns.
-                return new LinkResult(Providers.LinkState.Online);
+                return LinkResult.Online();
             }
             else
             {
@@ -101,7 +101,7 @@ namespace WF.Player.Providers
                 LinkState = Providers.LinkState.Offline;
 
                 // Returns.
-                return new LinkResult(Providers.LinkState.Offline, loginUrl);
+                return LinkResult.Offline(loginUrl, true);
 #endif
             }
         }
@@ -119,9 +119,9 @@ namespace WF.Player.Providers
             throw new System.NotImplementedException();
 #else
             // Succeeds if the ILinkable is already linked.
-            if (!CheckStateForLinking())
+            if (!CheckLinkState(Providers.LinkState.Online))
             {
-                return new LinkResult(Providers.LinkState.Online);
+                return LinkResult.Online();
             }
 
             // We're now linking.
@@ -141,7 +141,7 @@ namespace WF.Player.Providers
                     // We're offline because of a timeout.
                     LinkState = Providers.LinkState.Offline;
 
-                    return new LinkResult(Providers.LinkState.Offline, false, true);
+                    return LinkResult.Offline(true);
                 }
                 else
                 {
@@ -152,28 +152,10 @@ namespace WF.Player.Providers
                     LinkState = Providers.LinkState.Online;
 
                     // Returns.
-                    return new LinkResult(Providers.LinkState.Online);
+                    return LinkResult.Online();
                 }
             });
 #endif
-        }
-
-        private bool CheckStateForLinking()
-        {
-            LinkState ls = this.LinkState;
-            if (ls == Providers.LinkState.Online)
-            {
-                return false;
-            }
-
-            // Fails if the ILinkable is linking.
-            else if (ls == Providers.LinkState.Linking)
-            {
-                throw new InvalidOperationException("Another linking task is running.");
-            }
-
-            // We can link.
-            return true;
         }
 
         private void MakeClientFromSession(LiveConnectSession session)
@@ -183,13 +165,96 @@ namespace WF.Player.Providers
 
         #endregion
 
+        #region UnlinkAsync()
         public Task<LinkResult> UnlinkAsync()
         {
-            throw new System.NotImplementedException();
+            return Task.Factory.StartNew<LinkResult>(() =>
+            {
+                // Checks state.
+                if (!CheckLinkState(Providers.LinkState.Offline))
+                {
+                    return LinkResult.Offline();
+                }
+
+                // We're unlinking.
+                LinkState = Providers.LinkState.Unlinking;
+
+                // Kills the client.
+                _client = null;
+
+                // Prepares the link result.
+                LinkResult result = null;
+
+#if WINDOWS_PHONE || WINDOWS_STORE           
+            // Nothing more to do.
+            result = LinkResult.Offline();
+#else
+                // We're giving out the Uri for manual logout.
+                result = LinkResult.Offline(new LiveAuthClient(ClientId).GetLogoutUrl(), false);
+#endif
+
+                // We're offline.
+                LinkState = Providers.LinkState.Offline;
+
+                return result;
+            });
         } 
+        #endregion
+
+        private bool CheckLinkState(LinkState target)
+        {
+            LinkState ls = this.LinkState;
+            if (ls == target)
+            {
+                // Nothing to do.
+                return false;
+            }
+
+            // Fails if the ILinkable is linking.
+            else if (ls == Providers.LinkState.Linking)
+            {
+                throw new InvalidOperationException("Another linking task is running.");
+            }
+            else if (ls == Providers.LinkState.Unlinking)
+            {
+                throw new InvalidOperationException("Another unlinking task is running.");
+            }
+
+            // We can link or unlink.
+            return true;
+        }
 
         #endregion
 
+        #region ISyncable
 
+        public event EventHandler<SyncEventArgs> SyncProgress;
+
+        public bool CanSyncUp
+        {
+            get { return true; }
+        }
+
+        public bool CanSyncDown
+        {
+            get { return true; }
+        }
+
+        public Task SyncUp()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SyncDown()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Sync()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

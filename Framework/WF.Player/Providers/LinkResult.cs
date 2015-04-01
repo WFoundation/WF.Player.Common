@@ -29,39 +29,80 @@ namespace WF.Player.Providers
         public bool RequiresUserInput { get; private set; }
 
         /// <summary>
+        /// Gets if web navigation is required to further continue or complete the link operation.
+        /// </summary>
+        public bool RequiresWebNavigation { get; private set; }
+
+        /// <summary>
         /// Gets if the link process timed out.
         /// </summary>
         public bool TimedOut { get; private set; }
 
         /// <summary>
-        /// Gets an Uri that can be used to get user consent from the user in order to complete
-        /// the link operation.
+        /// Gets an Uri that can be used to continue the link operation on the web.
         /// </summary>
-        /// <remarks>This property is to be used alongside with <code>RequiresUserInput == true</code>.</remarks>
-        public Uri UserConsentUri { get; private set; }
+        /// <remarks>This property is to be used alongside with <code>RequiresWebNavigation == true</code>.</remarks>
+        public Uri WebNavigationUri { get; private set; }
 
         /// <summary>
         /// Gets the state of the link after the linking operation finished.
         /// </summary>
         public LinkState State { get; private set; }
 
-        public LinkResult(LinkState finalState)
+        /// <summary>
+        /// Constructs a simple result for a link state.
+        /// </summary>
+        /// <param name="ls"></param>
+        public LinkResult(LinkState ls)
         {
-            State = finalState;
+            State = ls;
         }
 
-        public LinkResult(LinkState finalState, bool requiresUserInput, bool timedOut)
+        /// <summary>
+        /// Makes a LinkResult representing an online link state.
+        /// </summary>
+        /// <returns></returns>
+        public static LinkResult Online()
         {
-            State = finalState;
-            RequiresUserInput = requiresUserInput;
-            TimedOut = timedOut;
+            return new LinkResult(LinkState.Online);
         }
 
-        public LinkResult(LinkState finalState, string userConsentUrl)
+        /// <summary>
+        /// Makes a LinkResult representing an offline link state.
+        /// </summary>
+        /// <returns></returns>
+        public static LinkResult Offline()
         {
-            State = finalState;
-            RequiresUserInput = true;
-            UserConsentUri = new Uri(userConsentUrl, UriKind.Absolute);
+            return new LinkResult(LinkState.Offline);
+        }
+
+        /// <summary>
+        /// Makes a LinkResult representing an offline link state that requires the client app
+        /// to navigate to an external web Url that will ask for user input or not.
+        /// </summary>
+        /// <param name="webNavigationUrl"></param>
+        /// <param name="requiresUserInput"></param>
+        /// <returns></returns>
+        public static LinkResult Offline(string webNavigationUrl, bool requiresUserInput)
+        {
+            return new LinkResult(LinkState.Offline)
+            {
+                RequiresWebNavigation = true,
+                WebNavigationUri = new Uri(webNavigationUrl)
+            };
+        }
+
+        /// <summary>
+        /// Makes a LinkResult representing an offline state that timed out or not.
+        /// </summary>
+        /// <param name="timedOut"></param>
+        /// <returns></returns>
+        public static LinkResult Offline(bool timedOut)
+        {
+            return new LinkResult(LinkState.Offline)
+            {
+                TimedOut = timedOut
+            };
         }
     }
 }
